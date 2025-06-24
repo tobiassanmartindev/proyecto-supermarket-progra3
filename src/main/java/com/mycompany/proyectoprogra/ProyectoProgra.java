@@ -8,8 +8,10 @@ import com.mycompany.proyectoprogra.igu.Principal;
 
 /**
  *
- * @author totol
+ * @author toto
  */
+
+// aca esta el cambio que hizo toto
 public class ProyectoProgra {
 
     public static void main(String[] args) {
