@@ -35,7 +35,7 @@ public class ControladoraController {
     
     public Clientes traerCliente(long id_cliente){
         return ClientePao.findClientes(id_cliente);
-    }    
+    }
     
     public void agregarCliente(Clientes cliente) throws Exception{
         ClientePao.create(cliente);
@@ -151,48 +151,45 @@ public class ControladoraController {
 
             // 3. Crear y persistir la Orden
             Ordenes nuevaOrden = new Ordenes();
-            nuevaOrden.setFechaOrden(fechaOrden);
+
+            // ✅ Conversión segura de java.util.Date a java.sql.Date
+            java.sql.Date fechaSQL = new java.sql.Date(fechaOrden.getTime());
+            nuevaOrden.setFechaOrden(fechaSQL);
+
             nuevaOrden.setIdCliente(cliente); // Asigna el objeto Cliente
             nuevaOrden.setIdEnvio(nuevoEnvio); // Asigna el objeto Envios
-            
-            // Inicializa la colección de detalles si no está ya inicializada por el constructor de Ordenes
+
+            // Inicializa la colección de detalles si no está ya inicializada
             if (nuevaOrden.getDetalleordenesCollection() == null) {
                 nuevaOrden.setDetalleordenesCollection(new java.util.ArrayList<>());
             }
 
             ordenesPao.create(nuevaOrden); // Persiste la orden para que tenga su ID
 
-            // 4. Persistir los Detalleordenes (asociados a la nueva Orden y Productos)
+            // 4. Persistir los Detalleordenes
             for (Detalleordenes detalle : detallesTemp) {
-                // Es crucial establecer la PK compuesta y las referencias a las entidades
-                DetalleordenesPK pk = new DetalleordenesPK(nuevaOrden.getIdOrden(), detalle.getProductos().getIdProducto());
+                DetalleordenesPK pk = new DetalleordenesPK(
+                    nuevaOrden.getIdOrden(),
+                    detalle.getProductos().getIdProducto()
+                );
                 detalle.setDetalleordenesPK(pk);
-                detalle.setOrdenes(nuevaOrden); // Asigna la orden recién creada
-                
-                // Asegúrate de que totalVenta, descuento, ganancia estén calculados antes de guardar
-                // Por ejemplo, si Productos tuviera un precio:
-                // float precioProducto = detalle.getProductos().getPrecio(); // Necesitas agregar 'precio' a Productos
-                // detalle.setTotalVenta(precioProducto * detalle.getCantidad());
-                // detalle.setDescuento(0.0f); // Asumiendo 0 por ahora, puedes agregar lógica
-                // detalle.setGanancia(detalle.getTotalVenta() * 0.2f); // Ejemplo de ganancia
+                detalle.setOrdenes(nuevaOrden);
+
+                // ⚠️ Asegúrate de que los campos de cálculo estén bien asignados antes
+                // Si tenés lógica adicional para calcular totalVenta, descuento o ganancia, hacelo aquí
 
                 detallesPao.create(detalle);
-                nuevaOrden.getDetalleordenesCollection().add(detalle); // Agrega a la colección de la orden
+                nuevaOrden.getDetalleordenesCollection().add(detalle);
             }
-            
-            // Opcional: Si quieres que la colección de detalles se actualice en la entidad Ordenes,
-            // puedes hacer un 'edit' de la orden después de añadir todos los detalles.
-            // ordenesC.edit(nuevaOrden);
 
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            // Podrías loggear el error o mostrar un mensaje más específico
             return false;
         }
     }
-    
-     public Ordenes traerOrden(long idOrden) {
+
+    public Ordenes traerOrden(long idOrden) {
         return ordenesPao.findOrdenes(idOrden);
     }
      
