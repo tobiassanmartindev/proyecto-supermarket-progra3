@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
+
 
 package com.mycompany.proyectoprogra;
 
 import com.mycompany.proyectoprogra.igu.Principal;
 
-/**
- *
- * @author toto
- */
 
-// aca esta el cambio que hizo toto
 public class ProyectoProgra {
 
     public static void main(String[] args) {
