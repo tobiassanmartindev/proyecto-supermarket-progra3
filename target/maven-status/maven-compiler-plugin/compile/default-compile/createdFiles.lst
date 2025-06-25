@@ -10,6 +10,8 @@ com\mycompany\proyectoprogra\igu\ventanaOrdenes$2.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$2.class
 com\mycompany\proyectoprogra\igu\Principal$1.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$1.class
+com\mycompany\proyectoprogra\igu\ventanaOrdenes$11.class
+com\mycompany\proyectoprogra\igu\ventanaProductos$8.class
 com\mycompany\proyectoprogra\igu\ventanaProductos$1.class
 com\mycompany\proyectoprogra\entitys\Categorias.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$5.class
@@ -29,6 +31,7 @@ com\mycompany\proyectoprogra\ProyectoProgra.class
 com\mycompany\proyectoprogra\controllers\ClientesJpaController.class
 com\mycompany\proyectoprogra\entitys\Clientes.class
 com\mycompany\proyectoprogra\igu\ventanaProductos.class
+com\mycompany\proyectoprogra\igu\ventanaCliente$7.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$8.class
 com\mycompany\proyectoprogra\entitys\Productos.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$4.class
@@ -40,6 +43,7 @@ com\mycompany\proyectoprogra\controllers\exceptions\NonexistentEntityException.c
 com\mycompany\proyectoprogra\igu\ventanaCliente$6.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$7.class
 com\mycompany\proyectoprogra\igu\Principal.class
+com\mycompany\proyectoprogra\igu\ventanaOrdenes$10.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes.class
 com\mycompany\proyectoprogra\controllers\EnviosJpaController.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$3.class

@@ -30,99 +30,80 @@ public class Principal extends javax.swing.JFrame {
         clientesBTN = new javax.swing.JButton();
         ordenesBTN = new javax.swing.JButton();
         productosBTN = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        clientesBTN.setText("clientes");
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        clientesBTN.setBackground(new java.awt.Color(242, 242, 242));
+        clientesBTN.setText("CLIENTES");
         clientesBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clientesBTNActionPerformed(evt);
             }
         });
+        jPanel1.add(clientesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 256, 121));
 
-        ordenesBTN.setText("ordenes");
+        ordenesBTN.setBackground(new java.awt.Color(242, 242, 242));
+        ordenesBTN.setText("ORDENES");
         ordenesBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ordenesBTNActionPerformed(evt);
             }
         });
+        jPanel1.add(ordenesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 290, 245, 121));
 
-        productosBTN.setText("productos");
+        productosBTN.setBackground(new java.awt.Color(242, 242, 242));
+        productosBTN.setText("PRODUCTOS");
         productosBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 productosBTNActionPerformed(evt);
             }
         });
+        jPanel1.add(productosBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 288, 121));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(534, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(clientesBTN)
-                        .addGap(165, 165, 165)
-                        .addComponent(ordenesBTN)
-                        .addGap(189, 189, 189))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(productosBTN)
-                        .addGap(283, 283, 283))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(303, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clientesBTN)
-                    .addComponent(ordenesBTN))
-                .addGap(93, 93, 93)
-                .addComponent(productosBTN)
-                .addGap(136, 136, 136))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ChatGPT Image 25 jun 2025, 03_13_09.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -90, 1310, 890));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(294, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 200, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void clientesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientesBTNActionPerformed
-        ventanaCliente ventanaClientes = new ventanaCliente();
+        ventanaCliente ventanaClientes = new ventanaCliente(this);
+        ventanaClientes.setLocationRelativeTo(null);
         ventanaClientes.setVisible(true);
-        ventanaClientes.setLocationRelativeTo(null); // centra al medio la interfaz
     }//GEN-LAST:event_clientesBTNActionPerformed
 
     private void ordenesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenesBTNActionPerformed
-        ventanaOrdenes ventanaOrdenes = new ventanaOrdenes();
+        
+        ventanaOrdenes ventanaOrdenes = new ventanaOrdenes(this);
         ventanaOrdenes.setVisible(true);
-        ventanaOrdenes.setLocationRelativeTo(null); // centra al medio la interfaz
+        ventanaOrdenes.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_ordenesBTNActionPerformed
 
     private void productosBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosBTNActionPerformed
-        ventanaProductos ventanaProductos = new ventanaProductos();
+        ventanaProductos ventanaProductos = new ventanaProductos(this);
         ventanaProductos.setVisible(true);
-        ventanaProductos.setLocationRelativeTo(null); // centra al medio la interfaz
+        ventanaProductos.setLocationRelativeTo(null);
     }//GEN-LAST:event_productosBTNActionPerformed
 
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clientesBTN;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton ordenesBTN;
     private javax.swing.JButton productosBTN;
