@@ -23,14 +23,16 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     private long productoSeleccionadoId = -1;
    
 
-    public ventanaOrdenes() {
+   public ventanaOrdenes() {
         initComponents();
-        cargarTabla();
-}
-    
-    
-   private void cargarTabla() {
-        String[] columnas = {"ID", "Nombre", "Categoría"};
+        cargarTablaProductos();
+        cargarModosEnvio();
+        inicializarTablaDetallesOrden(); // Inicializa la tabla de detalles de la orden
+    }
+
+    // --- Métodos de Carga de Datos en la UI ---
+    private void cargarTablaProductos() {
+        String[] columnas = {"ID", "Nombre", "Categoría", "Precio Unitario"}; // Agrega Precio Unitario
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         List<Productos> listaProductos = control.traerProductos();
@@ -38,14 +40,48 @@ public class ventanaOrdenes extends javax.swing.JFrame {
             Object[] fila = {
                 p.getIdProducto(),
                 p.getNombreProducto(),
-                p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria()
+                // Asegúrate que getIdCategoria() y getCategoria()/getSubcategoria() existen en tu entidad Categorias
+                p.getIdCategoria() != null ? p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria() : "Sin Categoría",
+                p.getPrecioUnitario() // Asume que ya tienes este getter en tu entidad Productos
             };
             modelo.addRow(fila);
         }
-
         tableProductos.setModel(modelo);
     }
+
+    private void cargarModosEnvio() {
+        // Puedes obtener esto de la base de datos (por ejemplo, de una tabla de 'TiposEnvio')
+        // o definirlo estáticamente si son pocos y fijos.
+        String[] modosEnvio = {"Estándar", "Express", "Retiro en Sucursal", "Internacional"};
+        jComboBox1.setModel(new DefaultComboBoxModel<>(modosEnvio));
+    }
     
+    // Nueva tabla para los detalles de la orden actual (productos agregados)
+    private void inicializarTablaDetallesOrden() {
+        String[] columnasDetalles = {"ID Producto", "Producto", "Cantidad", "Precio Unitario", "Total Venta", "Descuento", "Ganancia"};
+        DefaultTableModel modeloDetalles = new DefaultTableModel(columnasDetalles, 0);
+      //  jTableDetallesOrden.setModel(modeloDetalles); 
+    }
+
+    private void actualizarTablaDetallesOrden() {
+        String[] columnasDetalles = {"ID Producto", "Producto", "Cantidad", "Precio Unitario", "Total Venta", "Descuento", "Ganancia"};
+        DefaultTableModel modeloDetalles = new DefaultTableModel(columnasDetalles, 0);
+
+        for (Detalleordenes detalle : detallesTemp) {
+            Object[] fila = {
+                detalle.getProductos().getIdProducto(),
+                detalle.getProductos().getNombreProducto(),
+                detalle.getCantidad(),
+                detalle.getProductos().getPrecioUnitario(), // Muestra el precio unitario del producto
+                detalle.getTotalVenta(),
+                detalle.getDescuento(),
+                detalle.getGanancia()
+            };
+            modeloDetalles.addRow(fila);
+        }
+       // jTableDetallesOrden.setModel(modeloDetalles);
+    }
+   
    
 
     
@@ -69,6 +105,8 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         EstadoTXT = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        FechaTXT1 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cantidadTXT = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -128,6 +166,8 @@ public class ventanaOrdenes extends javax.swing.JFrame {
 
         jLabel1.setText("ENVIOS");
 
+        jLabel9.setText("ID cliente");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -135,51 +175,64 @@ public class ventanaOrdenes extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addGap(171, 171, 171))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CPostalTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(CiudadField)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(CiudadTXT))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(EstadoTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(ModificarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(GuardarBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(171, 171, 171))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(CPostalTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(CiudadField)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(CiudadTXT))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(EstadoTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(ModificarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(GuardarBTN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(32, 32, 32))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(FechaTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(FechaTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(17, 17, 17))
+                        .addComponent(FechaTXT1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(99, 99, 99)
+                .addGap(100, 100, 100)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(FechaTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                .addGap(64, 64, 64)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FechaTXT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(EstadoTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -298,7 +351,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 53, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -387,6 +440,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     private javax.swing.JButton EliminarBTN;
     private javax.swing.JTextField EstadoTXT;
     private javax.swing.JTextField FechaTXT;
+    private javax.swing.JTextField FechaTXT1;
     private javax.swing.JButton GuardarBTN;
     private javax.swing.JButton ModificarBTN;
     private javax.swing.JButton agregarBTN;
@@ -400,6 +454,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;

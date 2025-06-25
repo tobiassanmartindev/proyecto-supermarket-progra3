@@ -33,10 +33,9 @@ public class ventanaProductos extends javax.swing.JFrame {
 }
     
     
-    
-    
-   private void cargarTabla() {
-        String[] columnas = {"ID", "Nombre", "Categoría"};
+    private void cargarTabla() {
+        // *** CAMBIO AQUÍ: Agregamos "Precio Unitario" a las columnas ***
+        String[] columnas = {"ID", "Nombre", "Categoría", "Precio Unitario"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         List<Productos> listaProductos = control.traerProductos();
@@ -44,7 +43,8 @@ public class ventanaProductos extends javax.swing.JFrame {
             Object[] fila = {
                 p.getIdProducto(),
                 p.getNombreProducto(),
-                p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria()
+                p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria(),
+                p.getPrecioUnitario() // *** CAMBIO AQUÍ: Obtenemos el precio unitario ***
             };
             modelo.addRow(fila);
         }
@@ -52,123 +52,149 @@ public class ventanaProductos extends javax.swing.JFrame {
         tableProductos.setModel(modelo);
     }
     
-    private void limpiarCampos() {
+   private void limpiarCampos() {
         NombreTXT.setText("");
-        categoriaCombo.setSelectedIndex(-1);
+        precioTXT.setText(""); // *** CAMBIO AQUÍ: Limpiar el campo de precio ***
+        categoriaCombo.setSelectedIndex(-1); // Esto limpiará la selección si no hay categorías
         productoSeleccionadoId = -1;
     }
-
-    /*
-    private void guardarProducto() {
-        System.out.println("ENTRO EN GUARDAR PRODCTO \n\n\n");
-        String nombre = NombreTXT.getText();
-        Categorias categoriaSeleccionada = (Categorias) categoriaCombo.getSelectedItem();
-
-        if (!nombre.isBlank() && categoriaSeleccionada != null) {
-            try {
-                control.agregarProducto(nombre, categoriaSeleccionada);
-                JOptionPane.showMessageDialog(this, "Producto guardado exitosamente.");
-                cargarTabla();
-                limpiarCampos();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Complete todos los campos.");
-        }
-    }
-
-   private void modificarProducto() {
-        String nuevoNombre = NombreTXT.getText();
-        Categorias nuevaCategoria = (Categorias) categoriaCombo.getSelectedItem();
-
-        if (productoSeleccionadoId != -1 && !nuevoNombre.isBlank() && nuevaCategoria != null) {
-            try {
-                control.modificarProducto(productoSeleccionadoId, nuevoNombre, nuevaCategoria);
-                JOptionPane.showMessageDialog(this, "Producto modificado correctamente.");
-                cargarTabla();
-                limpiarCampos();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un producto y complete los campos.");
-        }
-    }
-    */
     
     private void guardarProducto() {
-    System.out.println("ENTRO EN GUARDAR PRODCTO \n\n\n");
-    String nombre = NombreTXT.getText();
+        String nombre = NombreTXT.getText();
+        String precioTexto = precioTXT.getText(); // Capturar el texto del precio
+        String categoriaStringSeleccionada = (String) categoriaCombo.getSelectedItem();
+        Categorias categoriaSeleccionada = null;
+        float precioUnitario = 0.0f; // Inicializar precio
 
-    // Obtener el String seleccionado del JComboBox
-    String categoriaStringSeleccionada = (String) categoriaCombo.getSelectedItem();
-    Categorias categoriaSeleccionada = null; // Inicializar a null
+        // Validar que el nombre no esté vacío
+        if (nombre.isBlank()) {
+            JOptionPane.showMessageDialog(this, "El nombre del producto es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    if (categoriaStringSeleccionada != null) {
-        
-        List<Categorias> todasLasCategorias = control.traerCategorias(); // Obtener la lista completa
-        for (Categorias cat : todasLasCategorias) {
-            if (cat.toString().equals(categoriaStringSeleccionada)) {
-                categoriaSeleccionada = cat;
-                break;
+        // Validar y parsear el precio
+        try {
+            precioUnitario = Float.parseFloat(precioTexto);
+            if (precioUnitario <= 0) {
+                JOptionPane.showMessageDialog(this, "El precio unitario debe ser un número positivo.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio unitario debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Buscar la categoría por su String
+        if (categoriaStringSeleccionada != null) {
+            List<Categorias> todasLasCategorias = control.traerCategorias();
+            for (Categorias cat : todasLasCategorias) {
+                if (cat.toString().equals(categoriaStringSeleccionada)) {
+                    categoriaSeleccionada = cat;
+                    break;
+                }
             }
         }
-    }
 
-    if (!nombre.isBlank() && categoriaSeleccionada != null) { // Asegúrate de que categoriaSeleccionada no sea null
+        // Validar que se haya seleccionado una categoría
+        if (categoriaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría válida.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            control.agregarProducto(nombre, categoriaSeleccionada);
-            JOptionPane.showMessageDialog(this, "Producto guardado exitosamente.");
+            // *** CAMBIO AQUÍ: Pasamos el precioUnitario a agregarProducto ***
+            control.agregarProducto(nombre, precioUnitario, categoriaSeleccionada);
+            JOptionPane.showMessageDialog(this, "Producto guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
             limpiarCampos();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al guardar el producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Imprime el stack trace para depuración
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Complete todos los campos y seleccione una categoría válida.");
     }
-}
+
 
 private void modificarProducto() {
-    String nuevoNombre = NombreTXT.getText();
-    String categoriaStringSeleccionada = (String) categoriaCombo.getSelectedItem();
-    Categorias nuevaCategoria = null; // Inicializar a null
+        String nuevoNombre = NombreTXT.getText();
+        String nuevoPrecioTexto = precioTXT.getText(); // Capturar el nuevo precio
+        String categoriaStringSeleccionada = (String) categoriaCombo.getSelectedItem();
+        Categorias nuevaCategoria = null;
+        float nuevoPrecioUnitario = 0.0f;
 
-    if (categoriaStringSeleccionada != null) {
-        // Lógica similar a guardarProducto() para buscar la categoría
-        List<Categorias> todasLasCategorias = control.traerCategorias();
-        for (Categorias cat : todasLasCategorias) {
-            if (cat.toString().equals(categoriaStringSeleccionada)) {
-                nuevaCategoria = cat;
-                break;
+        // Validar que haya un producto seleccionado
+        if (productoSeleccionadoId == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un producto para modificar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Validar nombre
+        if (nuevoNombre.isBlank()) {
+            JOptionPane.showMessageDialog(this, "El nombre del producto es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validar y parsear el nuevo precio
+        try {
+            nuevoPrecioUnitario = Float.parseFloat(nuevoPrecioTexto);
+            if (nuevoPrecioUnitario <= 0) {
+                JOptionPane.showMessageDialog(this, "El precio unitario debe ser un número positivo.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio unitario debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Buscar la nueva categoría
+        if (categoriaStringSeleccionada != null) {
+            List<Categorias> todasLasCategorias = control.traerCategorias();
+            for (Categorias cat : todasLasCategorias) {
+                if (cat.toString().equals(categoriaStringSeleccionada)) {
+                    nuevaCategoria = cat;
+                    break;
+                }
             }
         }
-    }
 
-    if (productoSeleccionadoId != -1 && !nuevoNombre.isBlank() && nuevaCategoria != null) {
+        // Validar que se haya seleccionado una categoría
+        if (nuevaCategoria == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una categoría válida.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            control.modificarProducto(productoSeleccionadoId, nuevoNombre, nuevaCategoria);
-            JOptionPane.showMessageDialog(this, "Producto modificado correctamente.");
+            // *** CAMBIO AQUÍ: Pasamos el nuevoPrecioUnitario a modificarProducto ***
+            control.modificarProducto(productoSeleccionadoId, nuevoNombre, nuevoPrecioUnitario, nuevaCategoria);
+            JOptionPane.showMessageDialog(this, "Producto modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
             limpiarCampos();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al modificar el producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Seleccione un producto, complete los campos y seleccione una categoría válida.");
     }
-}
+
+
+
+
     
     
     private void eliminarProducto() {
         if (productoSeleccionadoId != -1) {
-            control.eliminarProducto(productoSeleccionadoId);
-            JOptionPane.showMessageDialog(this, "Producto eliminado.");
-            cargarTabla();
-            limpiarCampos();
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar este producto?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                try {
+                    control.eliminarProducto(productoSeleccionadoId);
+                    JOptionPane.showMessageDialog(this, "Producto eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    cargarTabla();
+                    limpiarCampos();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un producto de la tabla.");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un producto de la tabla para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -186,6 +212,8 @@ private void modificarProducto() {
         NombreTXT = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         categoriaCombo = new javax.swing.JComboBox<>();
+        precioTXT = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductos = new javax.swing.JTable();
 
@@ -233,6 +261,8 @@ private void modificarProducto() {
 
         categoriaCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel5.setText("PRECIO");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -240,24 +270,28 @@ private void modificarProducto() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(ModificarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                                .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(GuardarBTN, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(NombreTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addComponent(jLabel4)
-                            .addGap(18, 18, 18)
-                            .addComponent(categoriaCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(ModificarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                                    .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(GuardarBTN, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(categoriaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(NombreTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(precioTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -267,11 +301,15 @@ private void modificarProducto() {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NombreTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(47, 47, 47)
+                .addGap(56, 56, 56)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(precioTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(categoriaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(217, 217, 217)
+                .addGap(194, 194, 194)
                 .addComponent(GuardarBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -381,8 +419,10 @@ private void modificarProducto() {
     private javax.swing.JComboBox<String> categoriaCombo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField precioTXT;
     private javax.swing.JTable tableProductos;
     // End of variables declaration//GEN-END:variables
 }

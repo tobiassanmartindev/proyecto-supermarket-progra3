@@ -4,6 +4,7 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,12 +38,22 @@ public class Productos implements Serializable {
     @Lob
     @Column(name = "nombre_producto")
     private String nombreProducto;
+    
+    private double precioUnitario;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productos")
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productos", fetch = FetchType.EAGER)
     private Collection<Detalleordenes> detalleordenesCollection;
 
     @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Categorias idCategoria;
 
     public Productos() {
@@ -52,9 +63,10 @@ public class Productos implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Productos(long idProducto, String nombreProducto) {
+    public Productos(long idProducto, String nombreProducto, double precioUnitario) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
+        this.precioUnitario = precioUnitario;
     }
 
     public long getIdProducto() {

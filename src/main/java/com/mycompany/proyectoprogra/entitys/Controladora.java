@@ -4,6 +4,7 @@ package com.mycompany.proyectoprogra.entitys;
 import com.mycompany.proyectoprogra.controllers.ControladoraController;
 import com.mycompany.proyectoprogra.controllers.exceptions.IllegalOrphanException;
 import com.mycompany.proyectoprogra.controllers.exceptions.NonexistentEntityException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,10 +54,11 @@ public void modificarCliente(long id, String nuevoNombre) throws Exception { // 
 
 // PRODUCTOS
 
-public void agregarProducto(String nombreProducto, Categorias categoria) throws Exception {
+public void agregarProducto(String nombreProducto, double precioUnitario,Categorias categoria) throws Exception {
     Productos producto = new Productos();
     producto.setNombreProducto(nombreProducto);
     producto.setIdCategoria(categoria);
+    producto.setPrecioUnitario(precioUnitario);
     controladoraPao.agregarProducto(producto);
 }
 
@@ -68,8 +70,8 @@ public void eliminarProducto(long idProducto) {
     }
 }
 
-public void modificarProducto(long idProducto, String nuevoNombre, Categorias nuevaCategoria) throws Exception {
-    controladoraPao.modificarProducto(idProducto, nuevoNombre, nuevaCategoria);
+public void modificarProducto(long idProducto, String nuevoNombre, double precioUnitario, Categorias nuevaCategoria) throws Exception {
+    controladoraPao.modificarProducto(idProducto, nuevoNombre,precioUnitario, nuevaCategoria);
 }
 
 public List<Productos> traerProductos() {
@@ -85,8 +87,27 @@ public Productos traerProducto(long idProducto) {
 public List<Categorias> traerCategorias() {
     return controladoraPao.traerCategorias();
 }
+
+//envios
+public void agregarEnvio(String modoEnvio, String ciudad, String estado, int codigoPostal){
+    controladoraPao.agregarEnvio(modoEnvio, ciudad, estado, codigoPostal);
+}
     
+public Envios traerEnvio(long idEnvio){
+        return controladoraPao.traerEnvio(idEnvio);
+    }
+
+//Orden
+public boolean guardarOrdenCompleta(Date fechaOrden, long idCliente, String modoEnvio, String ciudad, String estado, int codigoPostal, List<Detalleordenes> detallesTemp){
+    return controladoraPao.guardarOrdenCompleta(fechaOrden, idCliente, modoEnvio, ciudad, estado, codigoPostal, detallesTemp);
+}
   
-    
+public Ordenes traerOrden(long idOrden) {
+     return controladoraPao.traerOrden(idOrden);
+ }
+     
+ public List<Ordenes> traerTodasLasOrdenes() {
+        return controladoraPao.traerTodasLasOrdenes();
+    }
     
 }

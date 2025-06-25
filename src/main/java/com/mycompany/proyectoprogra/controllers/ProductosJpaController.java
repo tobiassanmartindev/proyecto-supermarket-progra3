@@ -6,7 +6,6 @@ package com.mycompany.proyectoprogra.controllers;
 
 import com.mycompany.proyectoprogra.controllers.exceptions.IllegalOrphanException;
 import com.mycompany.proyectoprogra.controllers.exceptions.NonexistentEntityException;
-import com.mycompany.proyectoprogra.controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import jakarta.persistence.Query;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,17 +30,17 @@ public class ProductosJpaController implements Serializable {
     public ProductosJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    public ProductosJpaController() {
-        emf = Persistence.createEntityManagerFactory("persistencia");
-    }
-    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    
+    public ProductosJpaController() {
+        emf = Persistence.createEntityManagerFactory("persistencia");
+    }
 
-    public void create(Productos productos) throws PreexistingEntityException, Exception {
+    public void create(Productos productos) {
         if (productos.getDetalleordenesCollection() == null) {
             productos.setDetalleordenesCollection(new ArrayList<Detalleordenes>());
         }
@@ -75,11 +74,6 @@ public class ProductosJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findProductos(productos.getIdProducto()) != null) {
-                throw new PreexistingEntityException("Productos " + productos + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -202,7 +196,6 @@ public class ProductosJpaController implements Serializable {
         return findProductosEntities(false, maxResults, firstResult);
     }
 
-    /*
     private List<Productos> findProductosEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -218,42 +211,7 @@ public class ProductosJpaController implements Serializable {
             em.close();
         }
     }
-    */
-    private List<Productos> findProductosEntities(boolean all, int maxResults, int firstResult) {
-        EntityManager em = getEntityManager();
-        List<Productos> productos = null; // Declarar la lista aquí
-        try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Productos.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            
-            // Obtener la lista de productos
-            productos = q.getResultList();
 
-            // Forzamos la carga de la relación de Categorias para cada Producto, esto se hace mientras el em esta activo y antes del finally que cierra el entity manager 
-            for (Productos p : productos) {
-                if (p.getIdCategoria() != null) {
-                    // Acceder a cualquier método de la categoría para forzar su inicialización.
-                    p.getIdCategoria().getCategoria();
-                }
-            }
-            return productos; // Devolver la lista que ahora tiene las categorías inicializadas
-        } catch (Exception e) {
-            // Manejo de la excepción, puedes loguearla
-            e.printStackTrace();
-            throw e; // O relanzar, o devolver null, según tu política de errores
-        } finally {
-            if (em != null) { // Asegurarse de que em no sea null antes de cerrarlo
-                em.close();
-            }
-        }
-    }
-    
-    /*
     public Productos findProductos(long id) {
         EntityManager em = getEntityManager();
         try {
@@ -262,35 +220,7 @@ public class ProductosJpaController implements Serializable {
             em.close();
         }
     }
-    */
-    
-    public Productos findProductos(long id) {
-        EntityManager em = getEntityManager();
-        Productos producto = null; // Declara la variable aquí
-        try {
-            producto = em.find(Productos.class, id);
-            
-            // Verifica que el producto no sea nulo y que la colección exista antes de acceder a ella
-            if (producto != null && producto.getDetalleordenesCollection() != null) {
-                // Accede a la colección para forzar su inicialización.
-                producto.getDetalleordenesCollection().size();
-            }
-            // (Opcional, pero recomendable si el error de Categorias vuelve a aparecer
-            // o si necesitas la categoría cuando cargas un solo producto)
-            if (producto != null && producto.getIdCategoria() != null) {
-                producto.getIdCategoria().getCategoria();
-            }
-            return producto; // Devuelve el producto con la colección ya cargada
-        } catch (Exception e) { // Capturar cualquier excepción
-            e.printStackTrace(); // Imprime la traza para depuración
-            throw e; // Relanza la excepción si es necesario que se maneje más arriba
-        } finally {
-            if (em != null) { // Asegúrate de que em no sea null antes de cerrar
-                em.close(); // Cierra el EntityManager
-            }
-        }
-    }
-    
+
     public int getProductosCount() {
         EntityManager em = getEntityManager();
         try {
