@@ -30,9 +30,8 @@ public class Principal extends javax.swing.JFrame {
         clientesBTN = new javax.swing.JButton();
         ordenesBTN = new javax.swing.JButton();
         productosBTN = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        productosBTN1 = new javax.swing.JButton();
         detalleBTN = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,64 +39,58 @@ public class Principal extends javax.swing.JFrame {
 
         clientesBTN.setBackground(new java.awt.Color(242, 242, 242));
         clientesBTN.setText("CLIENTES");
+        clientesBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clientesBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clientesBTNActionPerformed(evt);
             }
         });
-        jPanel1.add(clientesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 256, 121));
+        jPanel1.add(clientesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 280, 121));
 
         ordenesBTN.setBackground(new java.awt.Color(242, 242, 242));
         ordenesBTN.setText("ORDENES");
+        ordenesBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ordenesBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ordenesBTNActionPerformed(evt);
             }
         });
-        jPanel1.add(ordenesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 290, 245, 121));
+        jPanel1.add(ordenesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, 280, 130));
 
         productosBTN.setBackground(new java.awt.Color(242, 242, 242));
         productosBTN.setText("PRODUCTOS");
+        productosBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         productosBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 productosBTNActionPerformed(evt);
             }
         });
-        jPanel1.add(productosBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 288, 121));
+        jPanel1.add(productosBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, 280, 121));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ChatGPT Image 25 jun 2025, 03_13_09.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -400, 1310, 890));
-
-        productosBTN1.setBackground(new java.awt.Color(242, 242, 242));
-        productosBTN1.setText("PRODUCTOS");
-        productosBTN1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productosBTN1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(productosBTN1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 288, 121));
-
-        detalleBTN.setText("Detalle btn");
+        detalleBTN.setBackground(new java.awt.Color(242, 242, 242));
+        detalleBTN.setText("DETALLE ORDENES");
+        detalleBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         detalleBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 detalleBTNActionPerformed(evt);
             }
         });
-        jPanel1.add(detalleBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 510, 170, 90));
+        jPanel1.add(detalleBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 600, 280, 130));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ChatGPT Image 25 jun 2025, 03_13_09.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 870));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(236, 236, 236))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,10 +116,6 @@ public class Principal extends javax.swing.JFrame {
         ventanaProductos.setLocationRelativeTo(null);
     }//GEN-LAST:event_productosBTNActionPerformed
 
-    private void productosBTN1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosBTN1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_productosBTN1ActionPerformed
-
     private void detalleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detalleBTNActionPerformed
         ventanaDetalleOrdenes ventanaDetalle = new ventanaDetalleOrdenes(this);
         ventanaDetalle.setVisible(true);
@@ -141,6 +130,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton ordenesBTN;
     private javax.swing.JButton productosBTN;
-    private javax.swing.JButton productosBTN1;
     // End of variables declaration//GEN-END:variables
 }
