@@ -151,8 +151,6 @@ public class ControladoraController {
 
             // 3. Crear y persistir la Orden
             Ordenes nuevaOrden = new Ordenes();
-
-            // ✅ Conversión segura de java.util.Date a java.sql.Date
             java.sql.Date fechaSQL = new java.sql.Date(fechaOrden.getTime());
             nuevaOrden.setFechaOrden(fechaSQL);
 
@@ -163,9 +161,7 @@ public class ControladoraController {
             if (nuevaOrden.getDetalleordenesCollection() == null) {
                 nuevaOrden.setDetalleordenesCollection(new java.util.ArrayList<>());
             }
-
             ordenesPao.create(nuevaOrden); // Persiste la orden para que tenga su ID
-
             // 4. Persistir los Detalleordenes
             for (Detalleordenes detalle : detallesTemp) {
                 DetalleordenesPK pk = new DetalleordenesPK(
@@ -174,9 +170,6 @@ public class ControladoraController {
                 );
                 detalle.setDetalleordenesPK(pk);
                 detalle.setOrdenes(nuevaOrden);
-
-                // ⚠️ Asegúrate de que los campos de cálculo estén bien asignados antes
-                // Si tenés lógica adicional para calcular totalVenta, descuento o ganancia, hacelo aquí
 
                 detallesPao.create(detalle);
                 nuevaOrden.getDetalleordenesCollection().add(detalle);
@@ -195,6 +188,11 @@ public class ControladoraController {
      
      public List<Ordenes> traerTodasLasOrdenes() {
         return ordenesPao.findOrdenesEntities();
+    }
+     
+     //DETALLES ORDENES
+     public List<Detalleordenes> traerDetalleOrdenes(){
+        return detallesPao.findDetalleordenesEntities();
     }
     
 

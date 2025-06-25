@@ -30,13 +30,13 @@ public class ventanaProductos extends javax.swing.JFrame {
     List<Categorias> categorias = control.traerCategorias();
     categoriaCombo.removeAllItems();
     for (Categorias cat : categorias) {
-        categoriaCombo.addItem(cat.toString()); // Aquí agregas el String
+        categoriaCombo.addItem(cat.toString()); 
     }
 }
     
     
     private void cargarTabla() {
-        // *** CAMBIO AQUÍ: Agregamos "Precio Unitario" a las columnas ***
+        
         String[] columnas = {"ID", "Nombre", "Categoría", "Precio Unitario"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
@@ -46,7 +46,7 @@ public class ventanaProductos extends javax.swing.JFrame {
                 p.getIdProducto(),
                 p.getNombreProducto(),
                 p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria(),
-                p.getPrecioUnitario() // *** CAMBIO AQUÍ: Obtenemos el precio unitario ***
+                p.getPrecioUnitario() 
             };
             modelo.addRow(fila);
         }
@@ -56,19 +56,18 @@ public class ventanaProductos extends javax.swing.JFrame {
     
    private void limpiarCampos() {
         NombreTXT.setText("");
-        precioTXT.setText(""); // *** CAMBIO AQUÍ: Limpiar el campo de precio ***
-        categoriaCombo.setSelectedIndex(-1); // Esto limpiará la selección si no hay categorías
+        precioTXT.setText(""); 
+        categoriaCombo.setSelectedIndex(-1); 
         productoSeleccionadoId = -1;
     }
     
     private void guardarProducto() {
         String nombre = NombreTXT.getText();
-        String precioTexto = precioTXT.getText(); // Capturar el texto del precio
+        String precioTexto = precioTXT.getText(); 
         String categoriaStringSeleccionada = (String) categoriaCombo.getSelectedItem();
         Categorias categoriaSeleccionada = null;
-        float precioUnitario = 0.0f; // Inicializar precio
-
-        // Validar que el nombre no esté vacío
+        float precioUnitario = 0.0f; 
+       
         if (nombre.isBlank()) {
             JOptionPane.showMessageDialog(this, "El nombre del producto es obligatorio.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
             return;
@@ -104,14 +103,13 @@ public class ventanaProductos extends javax.swing.JFrame {
         }
 
         try {
-            // *** CAMBIO AQUÍ: Pasamos el precioUnitario a agregarProducto ***
             control.agregarProducto(nombre, precioUnitario, categoriaSeleccionada);
             JOptionPane.showMessageDialog(this, "Producto guardado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
             limpiarCampos();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar el producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace(); // Imprime el stack trace para depuración
+            e.printStackTrace(); 
         }
     }
 
@@ -165,7 +163,6 @@ private void modificarProducto() {
         }
 
         try {
-            // *** CAMBIO AQUÍ: Pasamos el nuevoPrecioUnitario a modificarProducto ***
             control.modificarProducto(productoSeleccionadoId, nuevoNombre, nuevoPrecioUnitario, nuevaCategoria);
             JOptionPane.showMessageDialog(this, "Producto modificado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             cargarTabla();
@@ -388,11 +385,11 @@ private void modificarProducto() {
     if (filaSeleccionada >= 0) {
         productoSeleccionadoId = (Long) tableProductos.getValueAt(filaSeleccionada, 0);
         String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
-        String categoriaNombreEnTabla = (String) tableProductos.getValueAt(filaSeleccionada, 2); // Asumo que columna 2 es la categoría
+        String categoriaNombreEnTabla = (String) tableProductos.getValueAt(filaSeleccionada, 2); 
 
         NombreTXT.setText(nombre);
 
-        // Intentar seleccionar el ítem correcto en el JComboBox
+        // Seleccion de item del comboBOx
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) categoriaCombo.getModel();
         for (int i = 0; i < model.getSize(); i++) {
             if (model.getElementAt(i).equals(categoriaNombreEnTabla)) {

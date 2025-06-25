@@ -110,4 +110,8 @@ public Ordenes traerOrden(long idOrden) {
         return controladoraPao.traerTodasLasOrdenes();
     }
     
+ //Detalle Ordenes
+ public List<Detalleordenes> traerDetalleOrdenes(){
+     return controladoraPao.traerDetalleOrdenes();
+ }
 }

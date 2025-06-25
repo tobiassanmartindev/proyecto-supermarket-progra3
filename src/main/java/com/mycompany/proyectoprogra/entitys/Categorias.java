@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.proyectoprogra.entitys;
 
 import jakarta.persistence.Basic;
@@ -116,10 +113,9 @@ public class Categorias implements Serializable {
     //return categoria + " - " + subcategoria;
 //}
 
-// Dentro de la clase Categorias.java
 @Override
     public String toString() {
-        // Esto es lo que se mostrará en el JComboBox y es lo que obtendrás como String.
+
         return this.categoria + " - " + this.subcategoria;
     }
     

@@ -97,6 +97,12 @@ public class ventanaCliente extends javax.swing.JFrame {
             }
         });
 
+        NombreTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NombreTXTActionPerformed(evt);
+            }
+        });
+
         volverBTN.setText("Atras");
         volverBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,10 +243,6 @@ public class ventanaCliente extends javax.swing.JFrame {
     }
 }
     
-    private void GuardarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarBTNActionPerformed
-        guardarCliente();
-    }//GEN-LAST:event_GuardarBTNActionPerformed
-
     private void tableClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientesMouseClicked
        int filaSeleccionada = tableClientes.getSelectedRow();
         if (filaSeleccionada >= 0) {
@@ -249,11 +251,6 @@ public class ventanaCliente extends javax.swing.JFrame {
             NombreTXT.setText(nombre);
         }
     }//GEN-LAST:event_tableClientesMouseClicked
-
-    private void GuardarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarBTNMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_GuardarBTNMouseClicked
 
     private void ModificarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ModificarBTNMouseClicked
         // TODO add your handling code here:
@@ -274,6 +271,19 @@ public class ventanaCliente extends javax.swing.JFrame {
         ventanaPrincipal.setVisible(true); 
         dispose(); 
     }//GEN-LAST:event_volverBTNActionPerformed
+
+    private void NombreTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NombreTXTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NombreTXTActionPerformed
+
+    private void GuardarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarBTNActionPerformed
+        guardarCliente();
+    }//GEN-LAST:event_GuardarBTNActionPerformed
+
+    private void GuardarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarBTNMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_GuardarBTNMouseClicked
 
   
    
