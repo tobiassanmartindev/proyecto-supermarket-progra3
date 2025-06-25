@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package com.mycompany.proyectoprogra.igu;
 
 import com.mycompany.proyectoprogra.entitys.Clientes;
@@ -9,7 +6,10 @@ import com.mycompany.proyectoprogra.entitys.Controladora;
 import com.mycompany.proyectoprogra.entitys.Detalleordenes;
 import com.mycompany.proyectoprogra.entitys.Productos;
 import static java.awt.SystemColor.control;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -48,6 +48,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         }
         tableProductos.setModel(modelo);
     }
+   
 
     private void cargarModosEnvio() {
         // Puedes obtener esto de la base de datos (por ejemplo, de una tabla de 'TiposEnvio')
@@ -81,10 +82,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         }
        // jTableDetallesOrden.setModel(modeloDetalles);
     }
-   
-   
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -105,7 +103,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         EstadoTXT = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        FechaTXT1 = new javax.swing.JTextField();
+        IdClienteTXT = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cantidadTXT = new javax.swing.JTextField();
@@ -212,7 +210,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(FechaTXT1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(IdClienteTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
@@ -228,7 +226,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addGap(64, 64, 64)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FechaTXT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(IdClienteTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -359,13 +357,52 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-     
-    
+
    
     private void GuardarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarBTNActionPerformed
-        
+        // Validar campos de entrada
+        if (FechaTXT.getText().isEmpty() || IdClienteTXT.getText().isEmpty() ||
+            EstadoTXT.getText().isEmpty() || CiudadTXT.getText().isEmpty() ||
+            CPostalTXT.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos de la orden y envío son obligatorios.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // Datos de la Orden
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Define el formato de fecha
+            Date fechaOrden = dateFormat.parse(FechaTXT.getText()); // Convierte String a Date
+            long idCliente = Long.parseLong(IdClienteTXT.getText()); // Asumo que FechaTXT1 es el campo para ID Cliente
+
+            // Datos del Envío
+            String estadoEnvio = EstadoTXT.getText();
+            String ciudadEnvio = CiudadTXT.getText();
+            String modoEnvio = (String) jComboBox1.getSelectedItem();
+            int codigoPostalEnvio = Integer.parseInt(CPostalTXT.getText());
+
+            // Validar que haya detalles en la orden
+            if (detallesTemp.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe agregar al menos un producto a la orden.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Llamar a la Controladora para guardar la orden completa
+            // Tu Controladora delega en ControladoraController para guardar
+            boolean guardado = control.guardarOrdenCompleta(fechaOrden, idCliente, modoEnvio, ciudadEnvio, estadoEnvio, codigoPostalEnvio, detallesTemp);
+
+            if (guardado) {
+                JOptionPane.showMessageDialog(this, "Orden guardada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCamposOrden();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al guardar la orden. Verifique ID Cliente, datos de envío o la disponibilidad de productos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID Cliente o Código Postal deben ser números válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado al guardar la orden: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_GuardarBTNActionPerformed
 
     private void GuardarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarBTNMouseClicked
@@ -375,12 +412,14 @@ public class ventanaOrdenes extends javax.swing.JFrame {
 
     private void ModificarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ModificarBTNMouseClicked
         // TODO add your handling code here:
-        
+    JOptionPane.showMessageDialog(this, "La función de modificar órdenes completas no está implementada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_ModificarBTNMouseClicked
 
     private void EliminarBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EliminarBTNMouseClicked
        
-        
+   JOptionPane.showMessageDialog(this, "La función de eliminar órdenes completas no está implementada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_EliminarBTNMouseClicked
 
     private void ModificarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarBTNActionPerformed
@@ -393,38 +432,80 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     }//GEN-LAST:event_cantidadTXTActionPerformed
 
     private void agregarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBTNActionPerformed
-        int fila = tableProductos.getSelectedRow();
+     int fila = tableProductos.getSelectedRow();
         if (fila >= 0) {
-          try {
-                 long idProducto = (Long) tableProductos.getValueAt(fila, 0);
-                 int cantidad = Integer.parseInt(cantidadTXT.getText());
+            try {
+                long idProducto = (Long) tableProductos.getValueAt(fila, 0);
+                int cantidad = Integer.parseInt(cantidadTXT.getText());
 
-                  Productos producto = control.traerProducto(idProducto); // este método deberías tenerlo hecho
-                  Detalleordenes detalle = new Detalleordenes();
-                    detalle.setProductos(producto);
+                if (cantidad <= 0) {
+                     JOptionPane.showMessageDialog(this, "La cantidad debe ser un número positivo.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+                     return;
+                }
+
+                Productos producto = control.traerProducto(idProducto); // Trae el producto completo para obtener su precio
+                if (producto != null) {
+                    Detalleordenes detalle = new Detalleordenes();
+                    detalle.setProductos(producto); // Asigna el objeto Producto completo
                     detalle.setCantidad(cantidad);
-                
+                    
+                    // --- Cálculo de TotalVenta, Descuento y Ganancia ---
+                    double precioUnitarioProducto = producto.getPrecioUnitario(); // Obtiene el precio del producto
+                    
+                    float totalVenta = (float) (precioUnitarioProducto * cantidad);
+                    float descuento = 0.0f; // Puedes implementar lógica de descuento aquí (ej: descuento % por cantidad)
+                    float ganancia = totalVenta * 0.20f; // Ejemplo: 20% de ganancia fija
 
-                  detallesTemp.add(detalle); // esto es una lista que creás arriba
+                    detalle.setTotalVenta(totalVenta);
+                    detalle.setDescuento(descuento);
+                    detalle.setGanancia(ganancia);
 
-            JOptionPane.showMessageDialog(this, "Producto agregado a la orden.");
-                cantidadTXT.setText("");
-            } catch (NumberFormatException e) {
-             JOptionPane.showMessageDialog(this, "Cantidad inválida.");
-             }
+                    // Verifica si el producto ya está en la lista detallesTemp
+                    boolean productoYaAgregado = false;
+                    for (Detalleordenes d : detallesTemp) {
+                        if (d.getProductos().getIdProducto() == idProducto) {
+                            // Si el producto ya existe, actualiza la cantidad y los cálculos
+                            d.setCantidad(d.getCantidad() + cantidad);
+                            d.setTotalVenta(d.getTotalVenta() + totalVenta);
+                            d.setDescuento(d.getDescuento() + descuento); // Suma el descuento si se acumula
+                            d.setGanancia(d.getGanancia() + ganancia);
+                            productoYaAgregado = true;
+                            break;
+                        }
+                    }
+
+                    if (!productoYaAgregado) {
+                        detallesTemp.add(detalle); // Agrega a la lista temporal si es un producto nuevo
+                    }
+                    
+                    actualizarTablaDetallesOrden(); // Actualiza la tabla de detalles de la orden
+
+                    JOptionPane.showMessageDialog(this, "Producto agregado a la orden (temporalmente).");
+                    cantidadTXT.setText("");
+                    nombreTXT.setText(""); // Limpia el nombre del producto seleccionado
+                    productoSeleccionadoId = -1; // Resetear la selección
                 } else {
-                         JOptionPane.showMessageDialog(this, "Seleccione un producto.");
-}
+                    JOptionPane.showMessageDialog(this, "Error: Producto no encontrado en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Cantidad inválida. Por favor, ingrese un número entero.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al agregar producto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para agregar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_agregarBTNActionPerformed
 
     private void tableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductosMouseClicked
-         int filaSeleccionada = tableProductos.getSelectedRow();
-         if (filaSeleccionada >= 0) {
-             productoSeleccionadoId = (Long) tableProductos.getValueAt(filaSeleccionada, 0);
-             String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
-             String categoriaNombreEnTabla = (String) tableProductos.getValueAt(filaSeleccionada, 2); // Asumo que columna 2 es la categoría
-             nombreTXT.setText(nombre);
-        }
+        int filaSeleccionada = tableProductos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            productoSeleccionadoId = (Long) tableProductos.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
+            nombreTXT.setText(nombre);
+        }  
     }//GEN-LAST:event_tableProductosMouseClicked
 
     private void nombreTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreTXTActionPerformed
@@ -432,6 +513,21 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     }//GEN-LAST:event_nombreTXTActionPerformed
 
   
+    // --- Métodos de Utilidad ---
+    private void limpiarCamposOrden() {
+        FechaTXT.setText("");
+        IdClienteTXT.setText(""); // ID Cliente
+        EstadoTXT.setText("");
+        CiudadTXT.setText("");
+        jComboBox1.setSelectedIndex(0); // Reinicia el combobox
+        CPostalTXT.setText("");
+        cantidadTXT.setText("");
+        nombreTXT.setText("");
+        detallesTemp.clear(); // Limpia la lista de detalles temporales
+        actualizarTablaDetallesOrden(); // Refresca la tabla de detalles para mostrarla vacía
+    }
+    
+    
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CPostalTXT;
@@ -440,8 +536,8 @@ public class ventanaOrdenes extends javax.swing.JFrame {
     private javax.swing.JButton EliminarBTN;
     private javax.swing.JTextField EstadoTXT;
     private javax.swing.JTextField FechaTXT;
-    private javax.swing.JTextField FechaTXT1;
     private javax.swing.JButton GuardarBTN;
+    private javax.swing.JTextField IdClienteTXT;
     private javax.swing.JButton ModificarBTN;
     private javax.swing.JButton agregarBTN;
     private javax.swing.JTextField cantidadTXT;

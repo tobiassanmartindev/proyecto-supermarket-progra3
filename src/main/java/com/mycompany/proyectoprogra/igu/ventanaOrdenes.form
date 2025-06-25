@@ -155,7 +155,7 @@
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="FechaTXT1" min="-2" pref="131" max="-2" attributes="0"/>
+                          <Component id="IdClienteTXT" min="-2" pref="131" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -177,7 +177,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="FechaTXT1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="IdClienteTXT" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -294,7 +294,7 @@
             <Property name="text" type="java.lang.String" value="ENVIOS"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="FechaTXT1">
+        <Component class="javax.swing.JTextField" name="IdClienteTXT">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
