@@ -36,7 +36,7 @@ public class ventanaProductos extends javax.swing.JFrame {
 }
     
     
-    private void cargarTabla() {
+    public void cargarTabla() {
         
         String[] columnas = {"ID", "Nombre", "Categoría", "Precio Unitario"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);

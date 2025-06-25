@@ -15,8 +15,6 @@ public class Controladora {
 ControladoraController controladoraPao = new ControladoraController();
 
 
-
-
 //CLIENTES    
 public List<Clientes> traerClientes(){
     return controladoraPao.traerClientes();

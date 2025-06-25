@@ -31,13 +31,15 @@ public class Principal extends javax.swing.JFrame {
         ordenesBTN = new javax.swing.JButton();
         productosBTN = new javax.swing.JButton();
         detalleBTN = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        clientesBTN.setBackground(new java.awt.Color(242, 242, 242));
+        clientesBTN.setBackground(new java.awt.Color(66, 66, 66));
+        clientesBTN.setForeground(new java.awt.Color(255, 255, 255));
         clientesBTN.setText("CLIENTES");
         clientesBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clientesBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -47,7 +49,8 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(clientesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 280, 121));
 
-        ordenesBTN.setBackground(new java.awt.Color(242, 242, 242));
+        ordenesBTN.setBackground(new java.awt.Color(66, 66, 66));
+        ordenesBTN.setForeground(new java.awt.Color(255, 255, 255));
         ordenesBTN.setText("ORDENES");
         ordenesBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ordenesBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +60,8 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(ordenesBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, 280, 130));
 
-        productosBTN.setBackground(new java.awt.Color(242, 242, 242));
+        productosBTN.setBackground(new java.awt.Color(66, 66, 66));
+        productosBTN.setForeground(new java.awt.Color(255, 255, 255));
         productosBTN.setText("PRODUCTOS");
         productosBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         productosBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -67,7 +71,8 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(productosBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, 280, 121));
 
-        detalleBTN.setBackground(new java.awt.Color(242, 242, 242));
+        detalleBTN.setBackground(new java.awt.Color(66, 66, 66));
+        detalleBTN.setForeground(new java.awt.Color(255, 255, 255));
         detalleBTN.setText("DETALLE ORDENES");
         detalleBTN.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         detalleBTN.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +81,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(detalleBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 600, 280, 130));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 80)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText(" Sistema de gestión");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 800, 150));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ChatGPT Image 25 jun 2025, 03_13_09.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 870));
@@ -97,14 +107,36 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clientesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientesBTNActionPerformed
-        ventanaCliente ventanaClientes = new ventanaCliente(this);
-        ventanaClientes.setLocationRelativeTo(null);
-        ventanaClientes.setVisible(true);
+
+        ventanaCliente ventana = new ventanaCliente(this);
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
+
+        new Thread(() -> {
+            try {
+                
+                Thread.sleep(300);
+                ventana.cargarTabla();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }//GEN-LAST:event_clientesBTNActionPerformed
 
     private void ordenesBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenesBTNActionPerformed
         
         ventanaOrdenes ventanaOrdenes = new ventanaOrdenes(this);
+        
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+                ventanaOrdenes.cargarProductos();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+        
         ventanaOrdenes.setVisible(true);
         ventanaOrdenes.setLocationRelativeTo(null);
         
@@ -112,12 +144,29 @@ public class Principal extends javax.swing.JFrame {
 
     private void productosBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productosBTNActionPerformed
         ventanaProductos ventanaProductos = new ventanaProductos(this);
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+                ventanaProductos.cargarTabla();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
         ventanaProductos.setVisible(true);
         ventanaProductos.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_productosBTNActionPerformed
 
     private void detalleBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detalleBTNActionPerformed
         ventanaDetalleOrdenes ventanaDetalle = new ventanaDetalleOrdenes(this);
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+                ventanaDetalle.cargarTablaDetalleOrdenes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
         ventanaDetalle.setVisible(true);
         ventanaDetalle.setLocationRelativeTo(null);
     }//GEN-LAST:event_detalleBTNActionPerformed
@@ -127,6 +176,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton clientesBTN;
     private javax.swing.JButton detalleBTN;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton ordenesBTN;
     private javax.swing.JButton productosBTN;

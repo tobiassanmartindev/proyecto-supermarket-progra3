@@ -35,7 +35,7 @@ public class ClientesJpaController implements Serializable {
     }
     
      public ClientesJpaController() {
-        emf = Persistence.createEntityManagerFactory("persistencia");
+        emf = com.mycompany.proyectoprogra.controllers.JpaUtil.getEntityManagerFactory();
     }
     public void create(Clientes clientes) throws PreexistingEntityException, Exception {
         if (clientes.getOrdenesCollection() == null) {

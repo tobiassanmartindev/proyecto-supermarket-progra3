@@ -34,7 +34,7 @@ public class ProductosJpaController implements Serializable {
     }
     
     public ProductosJpaController() {
-        emf = Persistence.createEntityManagerFactory("persistencia");
+        emf = com.mycompany.proyectoprogra.controllers.JpaUtil.getEntityManagerFactory();
     }
 
     public void create(Productos productos) {

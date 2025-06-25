@@ -29,50 +29,50 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
         cargarTablaDetalleOrdenes();
     }
     
-    private void cargarTablaDetalleOrdenes() {
-    String[] columnas = {
-        "ID Orden", 
-        "ID Cliente",
-        "ID Producto", 
-        "Nombre Producto", 
-        "Cantidad", 
-        "Precio Unitario", 
-        "Categoría", 
-        "Total Venta", 
-        "Ganancia", 
-        "ID Envío",
-        "Estado Envío",
-        "Ciudad",
-        "Código Postal",
-        "Modo de Envío"
-    };
-
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-
-    List<Detalleordenes> detalles = control.traerDetalleOrdenes();
-
-    for (Detalleordenes detalle : detalles) {
-        Object[] fila = new Object[]{
-            detalle.getDetalleordenesPK().getIdOrden(),
-            detalle.getOrdenes().getIdCliente().getIdCliente(),
-            detalle.getDetalleordenesPK().getIdProducto(),     
-            detalle.getProductos().getNombreProducto(), 
-            detalle.getCantidad(),
-            detalle.getProductos().getPrecioUnitario(),
-            detalle.getProductos().getIdCategoria(),
-            String.format("%.2f", detalle.getTotalVenta()),
-            String.format("%.2f", detalle.getGanancia()),
-            detalle.getOrdenes().getIdEnvio().getIdEnvio(),
-            detalle.getOrdenes().getIdEnvio().getEstado(),
-            detalle.getOrdenes().getIdEnvio().getCiudad(),
-            detalle.getOrdenes().getIdEnvio().getCodigoPostal(),
-            detalle.getOrdenes().getIdEnvio().getModoEnvio()
+    public void cargarTablaDetalleOrdenes() {
+        String[] columnas = {
+            "ID Orden", 
+            "ID Cliente",
+            "ID Producto", 
+            "Nombre Producto", 
+            "Cantidad", 
+            "Precio Unitario", 
+            "Categoría", 
+            "Total Venta", 
+            "Ganancia", 
+            "ID Envío",
+            "Estado Envío",
+            "Ciudad",
+            "Código Postal",
+            "Modo de Envío"
         };
-        modelo.addRow(fila);
-    }
 
-    tableDetalle.setModel(modelo);
-}
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        List<Detalleordenes> detalles = control.traerDetalleOrdenes();
+
+        for (Detalleordenes detalle : detalles) {
+            Object[] fila = new Object[]{
+                detalle.getDetalleordenesPK().getIdOrden(),
+                detalle.getOrdenes().getIdCliente().getIdCliente(),
+                detalle.getDetalleordenesPK().getIdProducto(),     
+                detalle.getProductos().getNombreProducto(), 
+                detalle.getCantidad(),
+                detalle.getProductos().getPrecioUnitario(),
+                detalle.getProductos().getIdCategoria(),
+                String.format("%.2f", detalle.getTotalVenta()),
+                String.format("%.2f", detalle.getGanancia()),
+                detalle.getOrdenes().getIdEnvio().getIdEnvio(),
+                detalle.getOrdenes().getIdEnvio().getEstado(),
+                detalle.getOrdenes().getIdEnvio().getCiudad(),
+                detalle.getOrdenes().getIdEnvio().getCodigoPostal(),
+                detalle.getOrdenes().getIdEnvio().getModoEnvio()
+            };
+            modelo.addRow(fila);
+        }
+
+        tableDetalle.setModel(modelo);
+    }
 
 
 

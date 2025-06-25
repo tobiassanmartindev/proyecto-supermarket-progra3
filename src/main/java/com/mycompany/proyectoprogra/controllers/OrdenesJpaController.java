@@ -30,7 +30,7 @@ public class OrdenesJpaController implements Serializable {
         this.emf = emf;
     }
      public OrdenesJpaController() {
-        emf = Persistence.createEntityManagerFactory("persistencia");
+        emf = com.mycompany.proyectoprogra.controllers.JpaUtil.getEntityManagerFactory();
     }
     
     private EntityManagerFactory emf = null;

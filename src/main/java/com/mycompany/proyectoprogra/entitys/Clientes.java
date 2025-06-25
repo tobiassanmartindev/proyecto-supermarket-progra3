@@ -94,6 +94,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.proyectoprogra.entitys.Clientes[ idCliente=" + idCliente + " ]";
+        return idCliente + " - " + nombreCliente;
     }
+
 }

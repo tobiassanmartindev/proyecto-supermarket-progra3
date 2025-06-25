@@ -19,8 +19,10 @@ public class ventanaCliente extends javax.swing.JFrame {
     private long clienteSeleccionadoId = -1;
     private JFrame ventanaPrincipal;
     
-    public ventanaCliente(JFrame ventanaPrincipal) {
+    public ventanaCliente(JFrame ventanaPrincipal) { 
+        System.out.println("Empieza la carga de los componentes");
         initComponents();
+        System.out.println("Termina la carga de los componentes");
         this.ventanaPrincipal = ventanaPrincipal;
     }
     
@@ -28,7 +30,7 @@ public class ventanaCliente extends javax.swing.JFrame {
         initComponents();
     }
     
-    private void cargarTabla() {
+    public void cargarTabla() {
         String[] columnas = {"ID", "Nombre"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
@@ -58,6 +60,7 @@ public class ventanaCliente extends javax.swing.JFrame {
         EliminarBTN = new javax.swing.JButton();
         NombreTXT = new javax.swing.JTextField();
         volverBTN = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableClientes = new javax.swing.JTable();
 
@@ -65,6 +68,8 @@ public class ventanaCliente extends javax.swing.JFrame {
 
         jLabel3.setText("Nombre del cliente");
 
+        GuardarBTN.setBackground(new java.awt.Color(153, 255, 153));
+        GuardarBTN.setForeground(new java.awt.Color(102, 102, 102));
         GuardarBTN.setText("Guardar");
         GuardarBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -77,6 +82,8 @@ public class ventanaCliente extends javax.swing.JFrame {
             }
         });
 
+        EliminarBTN.setBackground(new java.awt.Color(255, 204, 204));
+        EliminarBTN.setForeground(new java.awt.Color(102, 0, 0));
         EliminarBTN.setText("Eliminar");
         EliminarBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -90,10 +97,21 @@ public class ventanaCliente extends javax.swing.JFrame {
             }
         });
 
+        volverBTN.setBackground(new java.awt.Color(255, 255, 255));
+        volverBTN.setForeground(new java.awt.Color(102, 102, 102));
         volverBTN.setText("Atras");
         volverBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 volverBTNActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(204, 204, 255));
+        jButton1.setForeground(new java.awt.Color(0, 0, 102));
+        jButton1.setText("Modificar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -104,24 +122,26 @@ public class ventanaCliente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(NombreTXT)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(volverBTN)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(190, 190, 190))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(GuardarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                .addContainerGap())))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(NombreTXT)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(volverBTN)
+                                    .addComponent(EliminarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,10 +153,11 @@ public class ventanaCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(NombreTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(GuardarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EliminarBTN))
-                .addGap(28, 28, 28))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(GuardarBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addComponent(EliminarBTN))
         );
 
         tableClientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -173,9 +194,11 @@ public class ventanaCliente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 24, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -209,19 +232,19 @@ public class ventanaCliente extends javax.swing.JFrame {
     }
     
     private void modificarCliente() {
-    if (clienteSeleccionadoId != -1) { // Si hay un cliente seleccionado
+    if (clienteSeleccionadoId != -1) {
         String nuevoNombre = NombreTXT.getText();
 
-        if (!nuevoNombre.isBlank()) { // Si el nuevo nombre no está vacío
-            try { // <<< INICIA EL BLOQUE TRY-CATCH AQUÍ
-                control.modificarCliente(clienteSeleccionadoId, nuevoNombre); // Llama a tu Controladora
+        if (!nuevoNombre.isBlank()) { 
+            try { 
+                control.modificarCliente(clienteSeleccionadoId, nuevoNombre); 
                 JOptionPane.showMessageDialog(this, "Cliente modificado correctamente.", "Modificación Exitosa", JOptionPane.INFORMATION_MESSAGE);
-                cargarTabla(); // Recarga la tabla para ver el cambio
-                limpiarCampos(); // Limpia los campos de entrada
-            } catch (Exception e) { // <<< CAPTURA CUALQUIER EXCEPCIÓN
-                // Muestra un mensaje de error al usuario
+                cargarTabla(); 
+                limpiarCampos(); 
+            } catch (Exception e) { 
+                
                 JOptionPane.showMessageDialog(this, "Error al modificar el cliente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                // Muy importante para depuración: imprime la pila de la excepción en la consola
+                
                 e.printStackTrace(); 
             }
         } else {
@@ -264,12 +287,17 @@ public class ventanaCliente extends javax.swing.JFrame {
 
     }//GEN-LAST:event_GuardarBTNMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        modificarCliente(); 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
   
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EliminarBTN;
     private javax.swing.JButton GuardarBTN;
     private javax.swing.JTextField NombreTXT;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -32,6 +32,7 @@ com\mycompany\proyectoprogra\igu\ventanaDetalleOrdenes$2.class
 com\mycompany\proyectoprogra\controllers\ClientesJpaController.class
 com\mycompany\proyectoprogra\entitys\Clientes.class
 com\mycompany\proyectoprogra\igu\ventanaProductos.class
+com\mycompany\proyectoprogra\igu\ventanaCliente$7.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$8.class
 com\mycompany\proyectoprogra\entitys\Productos.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$4.class
@@ -43,9 +44,11 @@ com\mycompany\proyectoprogra\controllers\exceptions\NonexistentEntityException.c
 com\mycompany\proyectoprogra\igu\ventanaCliente$6.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$7.class
 com\mycompany\proyectoprogra\igu\Principal.class
+com\mycompany\proyectoprogra\igu\ventanaOrdenes$10.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes.class
 com\mycompany\proyectoprogra\controllers\EnviosJpaController.class
 com\mycompany\proyectoprogra\igu\ventanaCliente$3.class
 com\mycompany\proyectoprogra\entitys\Controladora.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$1.class
 com\mycompany\proyectoprogra\igu\ventanaOrdenes$4.class
+com\mycompany\proyectoprogra\controllers\JpaUtil.class

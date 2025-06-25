@@ -28,7 +28,7 @@ public class EnviosJpaController implements Serializable {
         this.emf = emf;
     }
     public EnviosJpaController() {
-        emf = Persistence.createEntityManagerFactory("persistencia");
+        emf = com.mycompany.proyectoprogra.controllers.JpaUtil.getEntityManagerFactory();
     }
     
     private EntityManagerFactory emf = null;
