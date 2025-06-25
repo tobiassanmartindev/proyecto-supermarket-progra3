@@ -324,7 +324,7 @@ private void modificarProducto() {
 
    
     private void GuardarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarBTNActionPerformed
-        System.out.println("ENTRO EN GUARDARBTN ACTION");
+
         guardarProducto();
     }//GEN-LAST:event_GuardarBTNActionPerformed
 
