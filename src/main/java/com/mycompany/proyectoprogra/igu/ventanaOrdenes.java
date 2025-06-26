@@ -101,7 +101,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
         hiloEnvios.start();
     }
     
-    // --- Métodos de Carga de Datos en la UI ---
+    //  Métodos de Carga de Datos en la UI 
     private void cargarTablaProductos() {
         String[] columnas = {"ID", "Nombre", "Categoría", "Precio Unitario"}; // Agrega Precio Unitario
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
@@ -112,7 +112,7 @@ public class ventanaOrdenes extends javax.swing.JFrame {
                 p.getIdProducto(),
                 p.getNombreProducto(),
                 p.getIdCategoria() != null ? p.getIdCategoria().getCategoria() + " - " + p.getIdCategoria().getSubcategoria() : "Sin Categoría",
-                p.getPrecioUnitario() // Asume que ya tienes este getter en tu entidad Productos
+                p.getPrecioUnitario() 
             };
             modelo.addRow(fila);
         }

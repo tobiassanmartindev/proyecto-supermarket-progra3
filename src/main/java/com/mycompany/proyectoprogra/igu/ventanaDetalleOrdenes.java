@@ -33,7 +33,8 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
         String[] columnas = {
             "ID Orden", 
             "ID Cliente",
-            "ID Producto", 
+            "ID Producto",
+            "Fecha",
             "Nombre Producto", 
             "Cantidad", 
             "Precio Unitario", 
@@ -55,7 +56,8 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
             Object[] fila = new Object[]{
                 detalle.getDetalleordenesPK().getIdOrden(),
                 detalle.getOrdenes().getIdCliente().getIdCliente(),
-                detalle.getDetalleordenesPK().getIdProducto(),     
+                detalle.getDetalleordenesPK().getIdProducto(),    
+                detalle.getOrdenes().getFechaOrden(),
                 detalle.getProductos().getNombreProducto(), 
                 detalle.getCantidad(),
                 detalle.getProductos().getPrecioUnitario(),
@@ -122,7 +124,7 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(volverBTN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 955, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,7 +132,7 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(volverBTN))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -142,14 +144,14 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -160,29 +162,31 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
     
     private void tableDetalleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDetalleMouseClicked
        int filaSeleccionada = tableDetalle.getSelectedRow();
-    if (filaSeleccionada >= 0) {
-        // Leer valores de la fila seleccionada
-        Object idOrden = tableDetalle.getValueAt(filaSeleccionada, 0);
-        Object idCliente = tableDetalle.getValueAt(filaSeleccionada, 1);
-        Object idProducto = tableDetalle.getValueAt(filaSeleccionada, 2);
-        Object nombreProducto = tableDetalle.getValueAt(filaSeleccionada, 3);
-        Object cantidad = tableDetalle.getValueAt(filaSeleccionada, 4);
-        Object precioUnitario = tableDetalle.getValueAt(filaSeleccionada, 5);
-        Object categoria = tableDetalle.getValueAt(filaSeleccionada, 6);
-        Object totalVenta = tableDetalle.getValueAt(filaSeleccionada, 7);
-        Object ganancia = tableDetalle.getValueAt(filaSeleccionada, 8);
-        Object idEnvio = tableDetalle.getValueAt(filaSeleccionada, 9);
-        Object estadoEnvio = tableDetalle.getValueAt(filaSeleccionada, 10);
-        Object ciudad = tableDetalle.getValueAt(filaSeleccionada, 11);
-        Object codigoPostal = tableDetalle.getValueAt(filaSeleccionada, 12);
-        Object modoEnvio = tableDetalle.getValueAt(filaSeleccionada, 13);
+       if (filaSeleccionada >= 0) {
+            // Leer valores de la fila seleccionada
+         Object idOrden = tableDetalle.getValueAt(filaSeleccionada, 0);
+         Object idCliente = tableDetalle.getValueAt(filaSeleccionada, 1);
+         Object idProducto = tableDetalle.getValueAt(filaSeleccionada, 2);
+         Object fechaOrden = tableDetalle.getValueAt(filaSeleccionada, 3); 
+         Object nombreProducto = tableDetalle.getValueAt(filaSeleccionada, 4);
+         Object cantidad = tableDetalle.getValueAt(filaSeleccionada, 5);
+         Object precioUnitario = tableDetalle.getValueAt(filaSeleccionada, 6);
+         Object categoria = tableDetalle.getValueAt(filaSeleccionada, 7);
+         Object totalVenta = tableDetalle.getValueAt(filaSeleccionada, 8);
+         Object ganancia = tableDetalle.getValueAt(filaSeleccionada, 9);
+         Object idEnvio = tableDetalle.getValueAt(filaSeleccionada, 10);
+         Object estadoEnvio = tableDetalle.getValueAt(filaSeleccionada, 11);
+         Object ciudad = tableDetalle.getValueAt(filaSeleccionada, 12);
+         Object codigoPostal = tableDetalle.getValueAt(filaSeleccionada, 13);
+         Object modoEnvio = tableDetalle.getValueAt(filaSeleccionada, 14);
 
         // Mostrar todos los datos en un mensaje
-        String info = String.format(
+       String info = String.format(
             "🧾 Detalle de Orden\n\n" +
             "ID Orden: %s\n" +
             "ID Cliente: %s\n" +
             "ID Producto: %s\n" +
+            "Fecha de Orden: %s\n" + // 👈 Agregado aquí
             "Nombre Producto: %s\n" +
             "Cantidad: %s\n" +
             "Precio Unitario: %s\n" +
@@ -194,14 +198,13 @@ public class ventanaDetalleOrdenes extends javax.swing.JFrame {
             "Ciudad: %s\n" +
             "Código Postal: %s\n" +
             "Modo de Envío: %s",
-            idOrden, idCliente, idProducto, nombreProducto,
-            cantidad, precioUnitario, categoria, totalVenta,
-            ganancia, idEnvio, estadoEnvio, ciudad, codigoPostal, modoEnvio
-        );
+            idOrden, idCliente, idProducto, fechaOrden,
+            nombreProducto, cantidad, precioUnitario, categoria,
+            totalVenta, ganancia, idEnvio, estadoEnvio, ciudad, codigoPostal, modoEnvio
+       );
 
-        JOptionPane.showMessageDialog(this, info, "📦 Información completa", JOptionPane.INFORMATION_MESSAGE);
-    }
-  
+       JOptionPane.showMessageDialog(this, info, "📦 Información completa", JOptionPane.INFORMATION_MESSAGE);
+      }
     }//GEN-LAST:event_tableDetalleMouseClicked
     
     private void volverBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBTNActionPerformed
